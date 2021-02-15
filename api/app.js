@@ -5,15 +5,17 @@ const Instabot = require("./instabot");
 const CommentsScraper = require('./scrapers/comments');
 const bot = new Instabot(process.env.USERNAME, process.env.PW, headless=false);
 
-const port = process.env.PORT || 3000;
+// test comments
+const comments = require('./test_comments.json');
+
+const port = process.env.PORT || 5000;
 
 (async () => {
-    let postUrl = process.argv[2];
-    await bot.start();
-    await bot.login();
+    // await bot.start();
+    // await bot.login();
 })();
 
-app.get("/comments", (req, res) => {
+app.get("/api/comments", (req, res) => {
     const url = req.query.url;
     let status = 200;
     let comments = [];
@@ -25,6 +27,7 @@ app.get("/comments", (req, res) => {
         // go to insta post
         commentsScraper.scrape()
             .then(comments => {
+                res.setHeader('Content-Type', 'application/json');
                 res.status(200);
                 res.send(comments);
             })
@@ -32,7 +35,12 @@ app.get("/comments", (req, res) => {
     }else{
         res.status(500).send("Failed to get comments.");
     }
-})
+});
+
+app.get("/api/comments/test", (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).send(comments);
+});
 
 app.listen(port, () => {
     console.log(`Listening on port: ${port}`);

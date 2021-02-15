@@ -12,11 +12,21 @@ const grayScale = {
     gray9: "#374047"
 }
 
+const breakpoints = {
+    sm: "640px",
+    md: "768px",
+    lg: "1024px",
+    xl: "1280px"
+}
+
 const rootTheme = {
-    primaryColor: "black",
+    primaryColor: "#92DCE5",
     primaryFont: "'Open Sans', sans-serif",
     contentMaxWidth: "1100px",
-    ...grayScale
+    ...grayScale,
+    breakpoints: {
+        ...breakpoints
+    }
 }
 
 export default rootTheme;
