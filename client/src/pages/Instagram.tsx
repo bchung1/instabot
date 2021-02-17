@@ -23,6 +23,7 @@ const StyledButton = styled(Button)`
 export default function Instagram(): ReactElement {
 
     const [url, setURL] = useState("");
+    const [comments, setComments] = useState([]);
 
     const onChange = (e: React.FormEvent<HTMLInputElement>) => {
         setURL(e.currentTarget.value);
@@ -30,43 +31,32 @@ export default function Instagram(): ReactElement {
 
     const onClickHandler = async () => {
 
-        const comments = await axios.get("/api/comments/test", {
+        let comments = await axios.get("/api/comments/test", {
             params: {
                 url: url
             }
         });
-        console.log(comments.data);
+        setComments(comments.data);
     }
+
+    const headers = [
+        "username",
+        "comment"
+    ]
 
     return (
         <Container className="d-flex justify-content-center">
-            <Container className="mt-5">
+            <Container className="mt-5 d-flex justify-content-center">
                 <div>
                     <Label>Enter URL:</Label>
                     <Input placeholder="Enter a public instagram url." onChange={onChange}/>
                     <StyledButton onClick={onClickHandler}>Parse Comments</StyledButton>
                 </div>
             </Container>
-            <Container className="mt-5">
-                <Table>
-                    <thead>
-                        <tr>
-                        <th>Month</th>
-                        <th>Savings</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>January</td>
-                            <td>$100</td>
-                        </tr>
-                        <tr>
-                            <td>February</td>
-                            <td>$80</td>
-                        </tr>
-                    </tbody>
-                </Table>
+            <Container className="mt-5 d-flex justify-content-center">
+                <Table headers={headers} rows={comments}/>
             </Container>
         </Container>
     )
 }
+
