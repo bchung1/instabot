@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Button from '../components/Button';
 import Container from '../components/Container';
 import Table from '../components/Table';
+import Dropdown from '../components/Dropdown';
 
 const Label = styled.label`
     margin-right: 5px;
@@ -44,6 +45,11 @@ export default function Instagram(): ReactElement {
         "comment"
     ]
 
+    const options = [
+        "Follow User",
+        "Tag N number of people in post"
+    ]
+
     return (
         <Container className="d-flex justify-content-center">
             <Container className="mt-5 d-flex justify-content-center">
@@ -53,9 +59,10 @@ export default function Instagram(): ReactElement {
                     <StyledButton onClick={onClickHandler}>Parse Comments</StyledButton>
                 </div>
             </Container>
-            <Container className="mt-5 d-flex justify-content-center">
+            <Dropdown className="mt-3" title="Select Criteria" options={options} />
+            {/* <Container className="mt-5 d-flex justify-content-center">
                 <Table headers={headers} rows={comments}/>
-            </Container>
+            </Container> */}
         </Container>
     )
 }
