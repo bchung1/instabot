@@ -1,10 +1,12 @@
 import React, { ReactElement, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import Button from '../components/Button';
-import Container from '../components/Container';
-import Table from '../components/Table';
-import Dropdown from '../components/Dropdown';
+import {
+    Button,
+    // Table,
+    Dropdown,
+    Container
+} from '../components/all';
 
 const Label = styled.label`
     margin-right: 5px;
@@ -20,6 +22,27 @@ const Input = styled.input`
 const StyledButton = styled(Button)`
     display: inline-block;
 `;
+
+const Title = styled.div`
+    font-size: 2em;
+`
+
+const CriteriaList = styled.div`
+    // width: 100%;
+    // background-color white;
+    // border-radius: 5px;
+    // min-height: 500px;
+    // box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+`
+
+const Criteria = styled.div`
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    background-color white;
+    border-radius: 5px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+`
 
 export default function Instagram(): ReactElement {
 
@@ -40,6 +63,10 @@ export default function Instagram(): ReactElement {
         setComments(comments.data);
     }
 
+    const itemSelectHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+        console.log(e.currentTarget.innerText);
+    }
+
     const headers = [
         "username",
         "comment"
@@ -51,19 +78,31 @@ export default function Instagram(): ReactElement {
     ]
 
     return (
-        <Container className="d-flex justify-content-center">
-            <Container className="mt-5 d-flex justify-content-center">
+        <div className="d-flex justify-content-center">
+            <Container>
+                    {/* <div className="mt-5 d-flex justify-content-center">
+                    <div>
+                        <Label>Enter URL:</Label>
+                        <Input placeholder="Enter a public instagram url." onChange={onChange}/>
+                        <StyledButton onClick={onClickHandler}>Parse Comments</StyledButton>
+                    </div>
+                </div> */}
+                <Title className="m-5 text-center">Fill out automation criteria.</Title>
                 <div>
-                    <Label>Enter URL:</Label>
-                    <Input placeholder="Enter a public instagram url." onChange={onChange}/>
-                    <StyledButton onClick={onClickHandler}>Parse Comments</StyledButton>
+                    <Dropdown className="mt-5" title="Add Criteria" options={options} itemSelectHandler={itemSelectHandler}/>
+                    <CriteriaList className="mt-5">
+                        <Criteria>Follow @bchungg</Criteria>
+                        <Criteria>Follow @bchungg</Criteria>
+                        <Criteria>Follow @bchungg</Criteria>
+                        <Criteria>Follow @bchungg</Criteria>
+                    </CriteriaList>
                 </div>
+
+                {/* <Container className="mt-5 d-flex justify-content-center">
+                    <Table headers={headers} rows={comments}/>
+                </Container> */}
             </Container>
-            <Dropdown className="mt-3" title="Select Criteria" options={options} />
-            {/* <Container className="mt-5 d-flex justify-content-center">
-                <Table headers={headers} rows={comments}/>
-            </Container> */}
-        </Container>
+        </div>
     )
 }
 

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface Props {
     children: React.ReactNode;
-    className?: string
+    className?: string;
 }
 
 const MyContainer = styled.div`
@@ -30,10 +30,8 @@ const Content = styled.div`
 
 export default function Container({children, className}: Props): ReactElement {
     return (
-        <MyContainer className={className}>
-            <Content>
-                {children}
-            </Content>
-        </MyContainer>
+        <Content className={className}>
+            {children}
+        </Content>
     )
 }

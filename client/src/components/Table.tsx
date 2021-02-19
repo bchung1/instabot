@@ -10,10 +10,6 @@ interface Props {
     rows: TableRow[]
 }
 
-const Cell = styled.div`
-    border: solid 1px ${props => props.theme.gray1};
-`
-
 const Container = styled.div`
     table, th, td {
         border: 1px solid black;
