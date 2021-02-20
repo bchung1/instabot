@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 
-import Hero from '../components/Hero';
+import {Hero} from '../components/all';
 
 export default function Home(): ReactElement {
     return (

@@ -10,7 +10,7 @@ import Home from './pages/Home';
 import Instagram from './pages/Instagram';
 
 // components
-import Navbar from './components/Navbar';
+import {Navbar} from './components/all';
 
 
 export default function App(): ReactElement {

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import Button from '../components/Button';
+import Button from './Button';
 
 const StyledLink  = styled(Link)`
     text-decoration: none;

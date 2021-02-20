@@ -1,9 +1,10 @@
-import Button from './Button';
-import Container from './Container';
-import Dropdown from './Dropdown';
-import Hero from './Hero';
-import Navbar from './Navbar';
-import Table from './Table';
+import Button from './shared/Button';
+import Container from './shared/Container';
+import Dropdown from './shared/Dropdown';
+import Hero from './shared/Hero';
+import Navbar from './shared/Navbar';
+import Table from './shared/Table';
+import FlashingInput from './shared/FlashingInput'
 
 export {
     Button,
@@ -11,5 +12,6 @@ export {
     Dropdown,
     Hero,
     Navbar,
-    Table
+    Table,
+    FlashingInput
 }

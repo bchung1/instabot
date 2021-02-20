@@ -5,7 +5,8 @@ import {
     Button,
     // Table,
     Dropdown,
-    Container
+    Container,
+    FlashingInput
 } from '../components/all';
 
 const Label = styled.label`
@@ -44,9 +45,15 @@ const Criteria = styled.div`
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 `
 
+interface CriteriaInterface {
+    text: string,
+    comp: React.ReactElement
+}
+
 export default function Instagram(): ReactElement {
 
     const [url, setURL] = useState("");
+    const [criteria, setCriteria] = useState([]);
     const [comments, setComments] = useState([]);
 
     const onChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -64,7 +71,7 @@ export default function Instagram(): ReactElement {
     }
 
     const itemSelectHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-        console.log(e.currentTarget.innerText);
+
     }
 
     const headers = [
@@ -72,7 +79,7 @@ export default function Instagram(): ReactElement {
         "comment"
     ]
 
-    const options = [
+    const criteriaOptions = [
         "Follow User",
         "Tag N number of people in post"
     ]
@@ -89,12 +96,20 @@ export default function Instagram(): ReactElement {
                 </div> */}
                 <Title className="m-5 text-center">Fill out automation criteria.</Title>
                 <div>
-                    <Dropdown className="mt-5" title="Add Criteria" options={options} itemSelectHandler={itemSelectHandler}/>
+                    <Dropdown
+                        className="mt-5"
+                        title="Add Criteria"
+                        itemSelectHandler={itemSelectHandler}
+                        options={criteriaOptions}
+                        />
                     <CriteriaList className="mt-5">
-                        <Criteria>Follow @bchungg</Criteria>
-                        <Criteria>Follow @bchungg</Criteria>
-                        <Criteria>Follow @bchungg</Criteria>
-                        <Criteria>Follow @bchungg</Criteria>
+                        {
+                            criteriaOptions.map((criteria, key) => {
+                                <Criteria key={key}>
+                                    {criteria}
+                                </Criteria>
+                            })
+                        }
                     </CriteriaList>
                 </div>
 
