@@ -4,11 +4,10 @@ import {FlashingInput} from '../all';
 interface Props {
     onInput: (event: React.FormEvent<HTMLSpanElement>) => void;
 }
-
-export default function FollowUser({onInput}: Props): ReactElement {
+export default function TagNUser({onInput}: Props): ReactElement {
     return (
         <div>
-            Follow @<FlashingInput onInput={onInput} />
+            Tag <FlashingInput onInput={onInput}/> Users
         </div>
     )
 }

@@ -1,7 +1,9 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useRef } from 'react';
 import styled from 'styled-components';
 
 interface Props {
+    onInput: (event: React.FormEvent<HTMLSpanElement>) => void;
+    value?: string;
 }
 
 const StyledFlashingInput = styled.span`
@@ -10,10 +12,19 @@ const StyledFlashingInput = styled.span`
     padding: 1px 8px 1px 8px;
 `;
 
-export default function FlashingInput({}: Props): ReactElement {
+export default function FlashingInput({onInput}: Props): ReactElement {
+
+    const ref: React.RefObject<HTMLSpanElement> = useRef(null);
 
     return (
-        <StyledFlashingInput contentEditable role="textbox">
+        <StyledFlashingInput
+            onInput={onInput}
+            contentEditable
+            role="textbox"
+            suppressContentEditableWarning={true}
+            ref={ref}
+            >
+            { ref && ref.current ? ref.current.innerText : ""}
         </StyledFlashingInput>
     )
 }

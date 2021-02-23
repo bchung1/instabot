@@ -6,11 +6,7 @@ interface Props {
     className?: string;
 }
 
-const MyContainer = styled.div`
-    width: 100%;
-`
-
-const Content = styled.div`
+const StyledContainer = styled.div`
     @media (min-width: ${props  => props.theme.breakpoints.sm}){
         max-width: ${props => props.theme.breakpoints.sm}
     }
@@ -30,8 +26,8 @@ const Content = styled.div`
 
 export default function Container({children, className}: Props): ReactElement {
     return (
-        <Content className={className}>
+        <StyledContainer className={className}>
             {children}
-        </Content>
+        </StyledContainer>
     )
 }

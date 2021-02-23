@@ -3,9 +3,12 @@ import styled from 'styled-components';
 
 interface Props {
     title: string;
-    options: string[];
+    options: {
+        key: string,
+        value: string
+    }[],
     className?: string;
-    itemSelectHandler?: (e: React.MouseEvent<HTMLDivElement>) => void;
+    itemSelectHandler?: ((event: React.MouseEvent<HTMLDivElement, MouseEvent>, key: string) => void)
 }
 
 const DropdownItem = styled.div`
@@ -57,22 +60,23 @@ export default function Dropdown({title, options, className, itemSelectHandler}:
         setShowMenu(!showMenu);
     }
 
-    const onDropdownItemHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    const onDropdownItemHandler = () => {
         setShowMenu(!showMenu);
     }
 
-    const dropdownItems = options.map((option: string, key: number) => {
+    const dropdownItems = options.map(({key, value}) => {
         return (
             <DropdownItem
                 key={key}
-                onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-                    onDropdownItemHandler(e);
-                    itemSelectHandler && itemSelectHandler(e);
-                }}>
-                    {option}
+                onClick={(e) => {
+                    onDropdownItemHandler();
+                    itemSelectHandler && itemSelectHandler(e, key);
+                }}
+                >
+                    {value}
             </DropdownItem>
         )
-    });
+    })
 
     return (
         <StyledDropdown className={className}>
