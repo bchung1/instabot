@@ -1,13 +1,25 @@
 import React, { ReactElement } from 'react';
-import {FlashingInput} from '../all';
+import styled from 'styled-components';
 
 interface Props {
-    onInput: (event: React.FormEvent<HTMLSpanElement>) => void;
+    getValue: (value: string) => void;
+    html: string;
 }
-export default function TagNUser({onInput}: Props): ReactElement {
+
+const StyledInput = styled.input`
+    width: 2.5em;
+`
+
+export default function TagNUser({getValue, html}: Props): ReactElement {
+
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const text = event.currentTarget.value;
+        getValue(text);
+    }
+
     return (
         <div>
-            Tag <FlashingInput onInput={onInput}/> Users
+            Tag <StyledInput onChange={onChange} value={html} type="number"/> Users
         </div>
     )
 }

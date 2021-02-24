@@ -4,6 +4,7 @@ import styled from 'styled-components';
 interface Props {
     color?: string,
     onClick?: () => void;
+    className?: string;
 }
 const Container = styled.button`
     position: relative;
@@ -26,9 +27,9 @@ interface Props {
     children: React.ReactNode;
 }
 
-export default function Button({children, color, onClick}: Props): ReactElement {
+export default function Button({children, color, onClick, className}: Props): ReactElement {
     return (
-        <Container color={color} onClick={onClick}>
+        <Container className={className} color={color} onClick={onClick}>
             {children}
         </Container> 
     )
