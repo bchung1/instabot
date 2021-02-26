@@ -21,6 +21,11 @@ const Container = styled.button`
     &:hover {
         filter: brightness(95%);
     }
+
+    &:focus {
+        outline: none;
+        border: none;
+    }
 `
 
 interface Props {

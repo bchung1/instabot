@@ -9,6 +9,7 @@ import TagNUser from './shared/TagNUser';
 import CommentPost from './shared/CommentPost';
 import List from './shared/List';
 import ListItem from './shared/ListItem';
+import TextInput from './shared/TextInput';
 
 export {
     Button,
@@ -21,5 +22,6 @@ export {
     CommentPost,
     TagNUser,
     List,
-    ListItem
+    ListItem,
+    TextInput
 }

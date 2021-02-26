@@ -55,42 +55,26 @@ const StyledDropdown = styled.div`
     min-width: 400px;
 `
 
-type Count = {
-    [key: string]: number
-}
-
 export default function Dropdown({title, options, className, itemSelectHandler}: Props): ReactElement {
 
-    const [counters, setCounters] = useState<Count>({});
-
     const [showMenu, setShowMenu] = useState(false);
-
-    const _itemSelectHandler = (key: string) => {
-        let count = counters[key] || 0;
-        setCounters({
-            ...counters,
-            [key]: count + 1
-        })
-    }
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
     }
 
     const dropdownItems = options
-        .filter(({key, max}) => counters[key] ? counters[key] < max : true)
-        .map(({key, value, max}) => {
+        .map(({key, value}) => {
             return (
                 <DropdownItem
                     key={key}
                     onClick={(e) => {
                         toggleMenu();
-                        _itemSelectHandler(key);
                         itemSelectHandler && itemSelectHandler(e, key);
                     }}
                     >
                         {value}
-                    <div className="ml-auto">Max: {max}</div>
+                    {/* <div className="ml-auto">{(max === Infinity) ? "Infinite" : `x${max}`}</div> */}
                 </DropdownItem>
             )
         })

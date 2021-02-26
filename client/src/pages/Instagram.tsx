@@ -8,7 +8,8 @@ import {
     CommentPost,
     List,
     ListItem,
-    Button
+    Button,
+    TextInput
 } from '../components/all';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -37,7 +38,11 @@ type Criteria = {
 
 export default function Instagram(): ReactElement {
 
+    const [url, setURL] = useState("");
+
     const [criteria, setCriteria] = useState<Criteria[]>([]);
+
+    const [counters, setCounters] = useState<{[key: string]: number}>({});
 
     const addCriteria = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, key: string) => {
         const selectedCriteria = criteriaOptions.find(criteria => criteria.templateID === key);
@@ -49,6 +54,13 @@ export default function Instagram(): ReactElement {
                     id: uuidv4()
                 }
             ])
+            
+            let templateID = selectedCriteria.templateID;
+            let count = counters[templateID] || 0;
+            setCounters({
+                ...counters,
+                [templateID]: count + 1
+            })
         }
     }
 
@@ -60,8 +72,28 @@ export default function Instagram(): ReactElement {
     }
 
     const criteriaDeleteHandler = (key: string) => {
-        const newCriteria = criteria.filter(c => c.id !== key);
-        setCriteria(newCriteria);
+        // remove criteria
+        let _criteria = [...criteria];
+        const idx = _criteria.findIndex(c => c.id === key);
+        let removedCriteria = _criteria.splice(idx, 1);
+        setCriteria(_criteria);
+
+        // decrement criteria count
+        let templateID = removedCriteria[0].templateID;
+        let currentCount = counters[templateID];
+        setCounters({
+            ...counters,
+            [templateID]: currentCount - 1
+        })
+    }
+
+    const onURLChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setURL(event.currentTarget.value);
+    }
+
+    const sendCriteria = () => {
+        console.log(url);
+        console.log(criteria);
     }
 
     const criteriaOptions: Criteria[] = [
@@ -90,17 +122,22 @@ export default function Instagram(): ReactElement {
             comp: CommentPost
         }
     ]
-
+    
     return (
         <div className="d-flex justify-content-center">
             <Container>
                 <Title className="m-5 text-center">Enter Filter Criteria</Title>
+                <div className="d-flex justify-content-center align-items-center">
+                    Instagram Post: <TextInput className="ml-1" onChange={onURLChange} value={url}/>
+                </div>
                 <div>
                     <Dropdown
                         className="mt-5"
                         title="Add Criteria"
                         itemSelectHandler={addCriteria}
-                        options={criteriaOptions.map(criteria => {
+                        options={criteriaOptions
+                            .filter(({max, templateID}) => counters[templateID] ? counters[templateID] < max : true)
+                            .map(criteria => {
                             return {
                                 key: criteria.templateID,
                                 value: criteria.dropdownText,
@@ -115,14 +152,22 @@ export default function Instagram(): ReactElement {
                                     <ListItem className="d-flex align-items-center" key={criteria.id}>
                                         <span className="mr-3">{index + 1}.</span>
                                         {<criteria.comp html={criteria.value} getValue={value => onCriteriaChange(value, criteria.id)} />}
-                                        <MinusIcon className="lni lni-circle-minus ml-auto" onClick={() => {criteriaDeleteHandler(criteria.id)}}></MinusIcon>
+                                        <MinusIcon
+                                            className="lni lni-circle-minus ml-auto"
+                                            onClick={() => {
+                                                criteriaDeleteHandler(criteria.id);
+                                            }}
+                                        />
                                     </ListItem>
                                 )
                             })
                         }
                     </List>
                 </div>
-                <Button className="mt-5" onClick={() => console.log(criteria)}>Log State</Button>
+                {/* <Button className="mt-5" onClick={() => console.log(criteria)}>Log State</Button> */}
+                <div className="d-flex justify-content-center">
+                    <Button onClick={sendCriteria} className="mt-5">Filter Post</Button>
+                </div>
             </Container>
         </div>
     )
