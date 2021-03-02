@@ -1,4 +1,5 @@
 import React, { ReactElement, useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import {
     Dropdown,
@@ -6,12 +7,20 @@ import {
     FollowUser,
     TagNUser,
     CommentPost,
+    LikePost,
     List,
     ListItem,
     Button,
     TextInput
 } from '../components/all';
 import { v4 as uuidv4 } from 'uuid';
+
+const StyledContainer = styled(Container)`
+    border-radius: 10px;
+    padding: 30px;
+    background-color: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+`;
 
 const Title = styled.div`
     font-size: 2em;
@@ -24,7 +33,8 @@ const MinusIcon = styled.i`
 type CriteriaComponent = (
     typeof FollowUser |
     typeof TagNUser |
-    typeof CommentPost
+    typeof CommentPost |
+    typeof LikePost
 )
 
 type Criteria = {
@@ -91,9 +101,16 @@ export default function Instagram(): ReactElement {
         setURL(event.currentTarget.value);
     }
 
-    const sendCriteria = () => {
+    const sendCriteria = async () => {
         console.log(url);
         console.log(criteria);
+        let data = {
+            criteria: criteria,
+            url: url
+        }
+        axios.post("/api/criteria", data)
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err));
     }
 
     const criteriaOptions: Criteria[] = [
@@ -120,12 +137,19 @@ export default function Instagram(): ReactElement {
             dropdownText: "Leave Comment",
             max: 1,
             comp: CommentPost
+        },{
+            id: "",
+            value: "",
+            templateID: "like",
+            dropdownText: "Like Post",
+            max: 1,
+            comp: LikePost
         }
     ]
     
     return (
         <div className="d-flex justify-content-center">
-            <Container>
+            <StyledContainer className="mt-5">
                 <Title className="m-5 text-center">Enter Filter Criteria</Title>
                 <div className="d-flex justify-content-center align-items-center">
                     Instagram Post: <TextInput className="ml-1" onChange={onURLChange} value={url}/>
@@ -168,7 +192,7 @@ export default function Instagram(): ReactElement {
                 <div className="d-flex justify-content-center">
                     <Button onClick={sendCriteria} className="mt-5">Filter Post</Button>
                 </div>
-            </Container>
+            </StyledContainer>
         </div>
     )
 }

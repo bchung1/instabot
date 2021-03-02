@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser');
 const app = express()
 
 const Instabot = require("./instabot");
@@ -6,9 +7,12 @@ const CommentsScraper = require('./scrapers/comments');
 const bot = new Instabot(process.env.USERNAME, process.env.PW, headless=false);
 
 // test comments
-const comments = require('./test_comments.json');
+const testComments = require('./test_comments.json');
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 (async () => {
     // await bot.start();
@@ -37,9 +41,19 @@ app.get("/api/comments", (req, res) => {
     }
 });
 
+app.get("api/likes", (req, res) => {
+    url = req.query.url;
+
+    if (url) {
+
+    }else{
+        res.status(500).send("Missing required parameter \"url\".")
+    }
+});
+
 app.get("/api/comments/test", (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    res.status(200).send(comments);
+    res.status(200).send(testComments);
 });
 
 app.listen(port, () => {

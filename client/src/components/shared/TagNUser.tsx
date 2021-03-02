@@ -19,7 +19,7 @@ export default function TagNUser({getValue, html}: Props): ReactElement {
 
     return (
         <div>
-            Tag <StyledInput onChange={onChange} value={html} type="number"/> Users
+            Tag <StyledInput onChange={onChange} value={html} type="number" min={0} /> Users
         </div>
     )
 }
