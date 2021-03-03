@@ -3,7 +3,11 @@ const bodyParser = require('body-parser');
 const app = express()
 
 const Instabot = require("./instabot");
+
+// scrapers
 const CommentsScraper = require('./scrapers/comments');
+const LikesScraper = require('./scrapers/likes');
+
 const bot = new Instabot(process.env.USERNAME, process.env.PW, headless=false);
 
 // test comments
@@ -15,8 +19,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 (async () => {
-    // await bot.start();
-    // await bot.login();
+    await bot.start();
+    await bot.login();
 })();
 
 app.get("/api/comments", (req, res) => {
@@ -29,6 +33,9 @@ app.get("/api/comments", (req, res) => {
         let commentsScraper = new CommentsScraper(bot.page, url);
 
         // go to insta post
+        await bot.goTo(url);
+
+        // scrape post
         commentsScraper.scrape()
             .then(comments => {
                 res.setHeader('Content-Type', 'application/json');
@@ -37,7 +44,7 @@ app.get("/api/comments", (req, res) => {
             })
             .catch(err => res.status(500).send(err));
     }else{
-        res.status(500).send("Failed to get comments.");
+        res.status(500).send("Instabot not logged in.");
     }
 });
 
@@ -45,7 +52,16 @@ app.get("api/likes", (req, res) => {
     url = req.query.url;
 
     if (url) {
+        if (bot.loggedIn){
+            // go to page
+            await bot.goTo(url);
 
+            // get likes
+            let scraper = new LikesScraper(bot.page);
+            await scraper.scrapeLikes();
+        }else{
+            res.status(500).send("Instabot not logged in.");
+        }
     }else{
         res.status(500).send("Missing required parameter \"url\".")
     }

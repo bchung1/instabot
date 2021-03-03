@@ -14,6 +14,14 @@ class Instabot {
         this.loggedIn = false;
     }
 
+    async goTo(url){
+        await this.page.goto(
+            url,
+            {
+                waitUntil: "networkidle0"
+            });
+    }
+
     async start(){
         // init browser
         this.browser = await puppeteer.launch({

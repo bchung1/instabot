@@ -1,9 +1,8 @@
 
 class CommentsScraper {
 
-    constructor(page, postUrl){
+    constructor(page){
         this.page = page;
-        this.postUrl = postUrl
     }
 
     async isElementVisible(cssSelector) {
@@ -20,7 +19,7 @@ class CommentsScraper {
         // this.page.screenshot({"page": "screenshot.png"});
         let comments = [];
         let new_comments = ["dummy"];
-        let loadMoreCommentsSelector = "#react-root > section > main > div > div.ltEKP > article > div.eo2As > div.EtaWk > ul > li > div > button";
+        let loadMoreCommentsSelector = "body > div > div > div > article > div > div > ul > li > div > button";
         // this is called initially in case the page is still rendering
         await this.page.waitForSelector(loadMoreCommentsSelector);
         await this.isElementVisible(loadMoreCommentsSelector);
@@ -30,18 +29,12 @@ class CommentsScraper {
                 .click(loadMoreCommentsSelector)
                 .catch(() => {});
             await this.isElementVisible(loadMoreCommentsSelector);
-            new_comments = await this.page.$x("//*[@id=\"react-root\"]/section/main/div/div[1]/article/div[3]/div[1]/ul/ul/div/li/div/div/div[2]");
+            new_comments = await this.page.$x("/html/body/div/div/div/article/div/div/ul/ul/div/li/div/div/div[2]");
         }
         return comments;
     }
 
     async scrape(){
-        await this.page.goto(
-            this.postUrl,
-            {
-                waitUntil: "networkidle0"
-            });
-
         // click continue as user button
         // this may or may not be there
         await this.page.waitForXPath("//a[contains(text(), 'Continue as')]", {timeout: 3000})
