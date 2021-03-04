@@ -23,7 +23,7 @@ app.use(bodyParser.json());
     await bot.login();
 })();
 
-app.get("/api/comments", (req, res) => {
+app.get("/api/comments", async (req, res) => {
     const url = req.query.url;
     let status = 200;
     let comments = [];
@@ -48,7 +48,7 @@ app.get("/api/comments", (req, res) => {
     }
 });
 
-app.get("api/likes", (req, res) => {
+app.get("/api/likes", async (req, res) => {
     url = req.query.url;
 
     if (url) {
@@ -58,7 +58,8 @@ app.get("api/likes", (req, res) => {
 
             // get likes
             let scraper = new LikesScraper(bot.page);
-            await scraper.scrapeLikes();
+            let likes = await scraper.scrapeLikes();
+            res.send(likes).status(200);
         }else{
             res.status(500).send("Instabot not logged in.");
         }
